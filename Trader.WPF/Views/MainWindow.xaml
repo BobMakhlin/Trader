@@ -72,6 +72,5 @@
                         Grid.ColumnSpan="2"
                         Grid.ZIndex="0"
                         Content="{Binding CurrentPage}"/>
-
     </Grid>
 </Window>

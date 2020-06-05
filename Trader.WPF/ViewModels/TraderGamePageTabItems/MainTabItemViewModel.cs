@@ -190,7 +190,7 @@ namespace Trader.WPF.ViewModels.TraderGamePageTabItems
 
         async void SellResourceAsync()
         {
-            var sourceWallet = m_parentViewModel.CurrentGameWallets.Find(w => w.ResourceId == ResourceToBuy.ResourceId);
+            var sourceWallet = m_parentViewModel.CurrentGameWallets.Find(w => w.ResourceId == ResourceToSell.ResourceId);
             var goldWallet = m_parentViewModel.CurrentGameWallets.Find(w => w.ResourceId == 6); // The id of the gold is 6.
 
             var selectedResourceRate = TradingResourcesRates.Find
