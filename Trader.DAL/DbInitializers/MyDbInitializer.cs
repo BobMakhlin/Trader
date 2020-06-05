@@ -85,8 +85,16 @@ namespace Trader.DAL.DbInitializers
 	                @GameId int 
                 as
 	                delete rr
-	                from dbo.ResourceRates rr
+	                from dbo.TradingResourceRates rr
 	                where rr.GameId = @GameId
+
+					delete wt
+					from dbo.ResourceWalletTransactions wt
+					where wt.GameId = @GameId
+
+					delete w
+					from dbo.ResourceWallets w
+					where w.GameId = @GameId
 
 	                delete g
 	                from dbo.Games g
