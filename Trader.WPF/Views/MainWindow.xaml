@@ -3,6 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:pageVMs="clr-namespace:Trader.WPF.ViewModels.PageViewModels.Custom"
+        xmlns:vws="clr-namespace:Trader.WPF.Views"
         xmlns:local="clr-namespace:Trader.WPF.Views"
         xmlns:converters="clr-namespace:Trader.WPF.Converters"
         mc:Ignorable="d"
@@ -10,6 +12,16 @@
 
     <Window.Resources>
         <converters:PathToUriConverter x:Key="pathToUriConverter"/>
+
+        <DataTemplate DataType="{x:Type pageVMs:CreateGameUcViewModel}">
+            <vws:EnterGameNameWindow />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type pageVMs:LoadGameUcViewModel}">
+            <vws:LoadGamePage />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type pageVMs:TraderGameUcViewModel}">
+            <vws:TraderGamePage />
+        </DataTemplate>
     </Window.Resources>
 
     <Window.Background>
@@ -56,10 +68,10 @@
             </Expander>
         </StackPanel>
 
-        <Frame Grid.Column="0" 
-               Grid.ColumnSpan="2" 
-               Grid.ZIndex="0"
-               NavigationUIVisibility="Hidden"
-               Source="{Binding CurrentPagePath, Converter={StaticResource pathToUriConverter}}"/>
+        <ContentControl Grid.Column="0" 
+                        Grid.ColumnSpan="2"
+                        Grid.ZIndex="0"
+                        Content="{Binding CurrentPage}"/>
+
     </Grid>
 </Window>

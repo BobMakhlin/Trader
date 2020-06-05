@@ -5,6 +5,7 @@ using Trader.BLL.BusinessModels;
 using Trader.BLL.Infrastructure;
 using Trader.BLL.Services.Common;
 using Trader.DAL.DbModels;
+using System.Linq;
 
 namespace Trader.BLL.Services.Extensions
 {
@@ -19,6 +20,39 @@ namespace Trader.BLL.Services.Extensions
 
             var gameIdParam = new SqlParameter("@GameId", gameId);
             await context.Database.ExecuteSqlCommandAsync("exec up_RemoveGameById @GameId", gameIdParam);
+        }
+
+        /// <summary>
+        /// Call the function sf_GetWalletBalance.
+        /// </summary>
+        public static double? CallSfGetWalletBalance
+        (
+            this IGenericService<ResourceWalletTransaction, ResourceWalletTransactionDto, int> service, 
+            int gameId, 
+            int resourceId
+        )
+        {
+            DbContext context = MyContainer.Resolve<DbContext>();
+
+            var gameIdParam = new SqlParameter("@GameId", gameId);
+            var resourceIdParam = new SqlParameter("@ResourceId", resourceId);
+
+            var funcRes = context.Database.SqlQuery<double?>("select dbo.sf_GetWalletBalance(@GameId, @ResourceId)", gameIdParam, resourceIdParam);
+            double? balance = funcRes.Single();
+
+            return balance;
+        }
+        /// <summary>
+        /// Call the function sf_GetWalletBalance asynchronously.
+        /// </summary>
+        public static async Task<double?> CallSfGetWalletBalanceAsync
+        (
+            this IGenericService<ResourceWalletTransaction, ResourceWalletTransactionDto, int> service,
+            int gameId,
+            int resourceId
+        )
+        {
+            return await Task.Run(() => service.CallSfGetWalletBalance(gameId, resourceId));
         }
     }
 }

@@ -12,12 +12,68 @@ namespace Trader.DAL.DbInitializers
     {
         protected override void Seed(TraderContext context)
         {
-            var wood = context.Resources.Add(new Resource { ResourceName = "Wood" });
-            var coal = context.Resources.Add(new Resource { ResourceName = "Coal" });
-            var iron = context.Resources.Add(new Resource { ResourceName = "Iron" });
-            var silver = context.Resources.Add(new Resource { ResourceName = "Silver" });
-            var gold = context.Resources.Add(new Resource { ResourceName = "Gold" });
-            var diamond = context.Resources.Add(new Resource { ResourceName = "Diamond" });
+            // Create resources.
+
+            var wood = context.Resources.Add(new Resource
+            {
+                ResourceName = "Wood"
+            });
+            var coal = context.Resources.Add(new Resource
+            {
+                ResourceName = "Coal"
+            });
+            var iron = context.Resources.Add(new Resource
+            {
+                ResourceName = "Iron"
+            });
+            var silver = context.Resources.Add(new Resource
+            {
+                ResourceName = "Silver"
+            });
+            var diamond = context.Resources.Add(new Resource
+            {
+                ResourceName = "Diamond"
+            });
+            var gold = context.Resources.Add(new Resource
+            {
+                ResourceName = "Gold"
+            });
+
+            context.SaveChanges();
+
+            // Create trading resources.
+            // Insert all resources except the gold.
+
+            context.TradingResources.Add(new TradingResource
+            {
+                ResourceId = wood.ResourceId,
+                MinPrice = 0.01,
+                MaxPrice = 0.25
+            });
+            context.TradingResources.Add(new TradingResource
+            {
+                ResourceId = coal.ResourceId,
+                MinPrice = 0.1,
+                MaxPrice = 0.375
+            });
+            context.TradingResources.Add(new TradingResource
+            {
+                ResourceId = iron.ResourceId,
+                MinPrice = 0.1,
+                MaxPrice = 0.5
+            });
+            context.TradingResources.Add(new TradingResource
+            {
+                ResourceId = silver.ResourceId,
+                MinPrice = 0.2,
+                MaxPrice = 0.75
+            });
+            context.TradingResources.Add(new TradingResource
+            {
+                ResourceId = diamond.ResourceId,
+                MinPrice = 1,
+                MaxPrice = 12
+            });
 
             context.SaveChanges();
 
@@ -37,6 +93,28 @@ namespace Trader.DAL.DbInitializers
 	                where g.GameId = @GameId
             ";
             context.Database.ExecuteSqlCommand(createProc);
+
+            // Create function sf_GetWalletBalance.
+
+            string createFunc =
+            @"
+                create function sf_GetWalletBalance
+                (
+	                @GameId int,
+	                @ResourceId int
+                )
+                returns float
+
+                begin
+	                return 
+	                (
+		                select sum(t.ResourceCount)
+		                from dbo.ResourceWalletTransactions t
+		                where t.GameId = @GameId and t.ResourceId = @ResourceId
+	                )
+                end
+            ";
+            context.Database.ExecuteSqlCommand(createFunc);
         }
     }
 }

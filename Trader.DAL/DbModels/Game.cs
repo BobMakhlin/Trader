@@ -19,6 +19,7 @@ namespace Trader.DAL.DbModels
 
         public int CurrentMoveNumber { get; set; }
 
-        public virtual ICollection<ResourceRate> ResourceRates { get; set; }
+        public virtual ICollection<TradingResourceRate> ResourceRates { get; set; }
+        public virtual ICollection<ResourceWallet> ResourceWallets { get; set; }
     }
 }

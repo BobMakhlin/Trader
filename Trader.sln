@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trader.DAL", "Trader.DAL\Trader.DAL.csproj", "{3864A56D-9982-4E63-A0B8-03AEE0EACD64}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trader.Tests", "Trader.Tests\Trader.Tests.csproj", "{A9C4FB38-D7BC-4A3D-A4E9-FEAE1EE7D035}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trader.WPF", "Trader.WPF\Trader.WPF.csproj", "{ED781E95-950F-41C4-B975-2ED481B4B346}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trader.Repository", "Trader.Repository\Trader.Repository.csproj", "{C9B171EC-BB4A-4A0F-ABA3-D65B169445D3}"
@@ -14,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trader.BLL", "Trader.BLL\Trader.BLL.csproj", "{D8D1A5F1-A66B-408B-A2B7-5676D018D91A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPF.Common", "WPF.Common\WPF.Common\WPF.Common.csproj", "{F8250045-B106-4790-A807-31BBBB0FAE3E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trader.Helpers", "Trader.Helpers\Trader.Helpers.csproj", "{D32EAAF1-C5D7-4987-B266-276257714E56}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +25,6 @@ Global
 		{3864A56D-9982-4E63-A0B8-03AEE0EACD64}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3864A56D-9982-4E63-A0B8-03AEE0EACD64}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3864A56D-9982-4E63-A0B8-03AEE0EACD64}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A9C4FB38-D7BC-4A3D-A4E9-FEAE1EE7D035}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A9C4FB38-D7BC-4A3D-A4E9-FEAE1EE7D035}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A9C4FB38-D7BC-4A3D-A4E9-FEAE1EE7D035}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A9C4FB38-D7BC-4A3D-A4E9-FEAE1EE7D035}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ED781E95-950F-41C4-B975-2ED481B4B346}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ED781E95-950F-41C4-B975-2ED481B4B346}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED781E95-950F-41C4-B975-2ED481B4B346}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,6 +41,10 @@ Global
 		{F8250045-B106-4790-A807-31BBBB0FAE3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8250045-B106-4790-A807-31BBBB0FAE3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8250045-B106-4790-A807-31BBBB0FAE3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D32EAAF1-C5D7-4987-B266-276257714E56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D32EAAF1-C5D7-4987-B266-276257714E56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D32EAAF1-C5D7-4987-B266-276257714E56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D32EAAF1-C5D7-4987-B266-276257714E56}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

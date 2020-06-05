@@ -1,49 +1,45 @@
-﻿using GalaSoft.MvvmLight.Command;
-using Prism.Events;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
-using Trader.BLL.BusinessModels;
-using Trader.BLL.Services.Common;
-using Trader.DAL.DbModels;
 using Trader.WPF.Helpers;
-using Trader.WPF.Models;
+using Trader.WPF.Infrastructure.MyEventArgs;
+using Trader.WPF.ViewModels.PageViewModels.Common;
+using Trader.WPF.ViewModels.PageViewModels.Custom;
 using WPF.Common.Helpers;
+using WPF.Common.Helpers.MyRelayCommand;
+using WPF.Common.Services;
+
+/*
+    «Нет ничего невозможного. Само слово говорит: „Я возможно!“ (Impossible — I'm possible)» — Одри Хепбёрн. 
+*/
 
 namespace Trader.WPF.ViewModels
 {
     class MainWindowViewModel : NotifyPropertyChanged
     {
-        #region Private Definitions
-        string m_currentPagePath;
+        #region Fields
         bool m_menuOpened;
-        IEventAggregator m_eventAggregator;
-
+        IPageViewModel m_currentPage;
+        Dictionary<Type, IPageViewModel> m_savedViewModels;
         #endregion
 
-        public MainWindowViewModel(IEventAggregator eventAggregator)
+        #region Constructors
+        public MainWindowViewModel()
         {
             InitCommands();
 
-            m_eventAggregator = eventAggregator;
-            m_eventAggregator.GetEvent<GameIdEvent>().Subscribe(OnGameIdReceived);
+            m_savedViewModels = new Dictionary<Type, IPageViewModel>();
 
-            CurrentPagePath = GamePagesList.EnterGameNamePagePath;
+            OpenEnterGameNamePage();
         }
+        #endregion
 
-        public string CurrentPagePath
-        {
-            get => m_currentPagePath;
-            set
-            {
-                m_currentPagePath = value;
-                RaisePropertyChanged();
-            }
-        }
+        #region Properties
+        public ICommand OpenEnterGameNamePageCommand { get; set; }
+        public ICommand OpenLoadGamePageCommand { get; set; }
+
         public bool IsMenuOpened
         {
             get => m_menuOpened;
@@ -54,9 +50,18 @@ namespace Trader.WPF.ViewModels
             }
         }
 
-        public ICommand OpenEnterGameNamePageCommand { get; set; }
-        public ICommand OpenLoadGamePageCommand { get; set; }
+        public IPageViewModel CurrentPage
+        {
+            get => m_currentPage;
+            set
+            {
+                m_currentPage = value;
+                RaisePropertyChanged();
+            }
+        }
+        #endregion
 
+        #region Methods
         void InitCommands()
         {
             OpenEnterGameNamePageCommand = new RelayCommand(OpenEnterGameNamePage);
@@ -65,18 +70,43 @@ namespace Trader.WPF.ViewModels
 
         void OpenEnterGameNamePage()
         {
-            CurrentPagePath = GamePagesList.EnterGameNamePagePath;
+            IPageViewModel pageVm;
+            bool containsVm = m_savedViewModels.TryGetValue(typeof(CreateGameUcViewModel), out pageVm);
+            if (!containsVm)
+            {
+                var vm = new CreateGameUcViewModel();
+                vm.GameCreated += OnGameChoosed;
+                pageVm = vm;
+            }
+
+            CurrentPage = pageVm;
+
             IsMenuOpened = false;
         }
-        void OnGameIdReceived(int gameId)
-        {
-            MessageBox.Show($"New game id: {gameId}");
-        }
-
         void OpenLoadGamePage()
         {
-            CurrentPagePath = GamePagesList.LoadGamePagePath;
+            IPageViewModel pageVm;
+
+            bool containsVm = m_savedViewModels.TryGetValue(typeof(LoadGameUcViewModel), out pageVm);
+            if (!containsVm)
+            {
+                var vm = new LoadGameUcViewModel(new DialogService());
+                vm.GameLoaded += OnGameChoosed;
+
+                pageVm = vm;
+            }
+
+            CurrentPage = pageVm;
+
             IsMenuOpened = false;
         }
+
+        void OnGameChoosed(object sender, GameEventArgs e)
+        {
+            var vm = new TraderGameUcViewModel(e.GameId);
+            CurrentPage = vm;
+        }
+
+        #endregion
     }
 }

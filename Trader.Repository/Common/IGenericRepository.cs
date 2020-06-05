@@ -22,6 +22,7 @@ namespace Trader.Repository.Common
 
         // Filter.
         IEnumerable<TElement> Where(Expression<Func<TElement, bool>> predicate);
+        TElement Get(Expression<Func<TElement, bool>> predicate);
 
         // Save.
         void Save();

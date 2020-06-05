@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Trader.WPF.Helpers
+﻿namespace Trader.WPF.Helpers
 {
     static class GamePagesList
     {
-        public const string EnterGameNamePagePath = "/Views/EnterGameNamePage.xaml";
+        public const string EnterGameNamePagePath = "/Views/CreateGamePage.xaml";
         public const string LoadGamePagePath = "/Views/LoadGamePage.xaml";
+        public const string TraderGamePagePath = "/Views/TraderGamePage.xaml";
     }
 }

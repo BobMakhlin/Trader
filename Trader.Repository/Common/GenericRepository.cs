@@ -47,6 +47,10 @@ namespace Trader.Repository.Common
         {
             return m_table.Where(predicate);
         }
+        public TElement Get(Expression<Func<TElement, bool>> predicate)
+        {
+            return m_table.FirstOrDefault(predicate);
+        }
 
         public void Save()
         {

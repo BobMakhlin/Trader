@@ -73,5 +73,11 @@ namespace Trader.BLL.Services.Common
             var result = m_repository.Where(targetPredicate);
             return m_mapper.Map<IEnumerable<TDtoElement>>(result);
         }
+        public TDtoElement Get(Expression<Func<TDtoElement, bool>> predicate)
+        {
+            var targetPredicate = m_mapper.Map<Expression<Func<TDbElement, bool>>>(predicate);
+            var result = m_repository.Get(targetPredicate);
+            return m_mapper.Map<TDtoElement>(result);
+        }
     }
 }

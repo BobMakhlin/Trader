@@ -24,5 +24,6 @@ namespace Trader.BLL.Services.Common
 
         // Filter.
         IEnumerable<TDtoElement> Where(Expression<Func<TDtoElement, bool>> predicate);
+        TDtoElement Get(Expression<Func<TDtoElement, bool>> predicate);
     }
 }

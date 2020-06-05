@@ -11,9 +11,12 @@ namespace Trader.DAL.DbModels
     {
         public int ResourceId { get; set; }
 
-        // nvarchar(64), not null.
+        [Required]
+        [StringLength(64)]
         public string ResourceName { get; set; }
 
-        public virtual ICollection<ResourceRate> ResourceRates { get; set; }
+        public virtual TradingResource TradingResource { get; set; }
+
+        public virtual ICollection<ResourceWallet> ResourceWalletTransactions { get; set; }
     }
 }

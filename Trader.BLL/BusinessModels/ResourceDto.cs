@@ -11,8 +11,7 @@ namespace Trader.BLL.BusinessModels
     {
         public int ResourceId { get; set; }
 
-        [Required]
-        [StringLength(64)]
+        // nvarchar(64), not null.
         public string ResourceName { get; set; }
     }
 }

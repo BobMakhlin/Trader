@@ -1,0 +1,39 @@
+﻿<UserControl x:Class="Trader.WPF.Views.EnterGameNameWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Trader.WPF.Views"
+        mc:Ignorable="d"
+        Height="120" Width="450">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Style="{StaticResource ControlWithFont}" 
+                   Foreground="{StaticResource TraderDarkBrush}"
+                   VerticalAlignment="Center"
+                   Text="Game name:"/>
+        <TextBox Style="{StaticResource TraderTextBox}" 
+                 Grid.Column="1"
+                 Margin="5"
+                 VerticalContentAlignment="Center"
+                 Text="{Binding GameName}"/>
+
+        <UniformGrid Grid.Row="1" Grid.ColumnSpan="2">
+            <Button Style="{StaticResource TraderButton}"
+                    Foreground="{StaticResource TraderDarkBrush}"
+                    Margin="5"
+                    Command="{Binding CreateGameCommand}"
+            >OK</Button>
+
+        </UniformGrid>
+    </Grid>
+</UserControl>

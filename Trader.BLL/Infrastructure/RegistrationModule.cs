@@ -26,11 +26,32 @@ namespace Trader.BLL.Infrastructure
                 .As(typeof(IGenericRepository<Resource, int>));
 
             builder
-                .RegisterType(typeof(ResourceRateService))
-                .As(typeof(IGenericService<ResourceRate, ResourceRateDto, int>));
+                .RegisterType(typeof(TradingResourceService))
+                .As(typeof(IGenericService<TradingResource, TradingResourceDto, int>));
             builder
-                .RegisterType(typeof(ResourceRateRepository))
-                .As(typeof(IGenericRepository<ResourceRate, int>));
+                .RegisterType(typeof(TradingResourceRepository))
+                .As(typeof(IGenericRepository<TradingResource, int>));
+
+            builder
+                .RegisterType(typeof(TradingResourceRateService))
+                .As(typeof(IGenericService<TradingResourceRate, TradingResourceRateDto, int>));
+            builder
+                .RegisterType(typeof(TradingResourceRateRepository))
+                .As(typeof(IGenericRepository<TradingResourceRate, int>));
+
+            builder
+                .RegisterType(typeof(ResourceWalletService))
+                .As(typeof(IGenericService<ResourceWallet, ResourceWalletDto, int>));
+            builder
+               .RegisterType(typeof(ResourceWalletRepository))
+               .As(typeof(IGenericRepository<ResourceWallet, int>));
+
+            builder
+                .RegisterType(typeof(ResourceWalletTransactionService))
+                .As(typeof(IGenericService<ResourceWalletTransaction, ResourceWalletTransactionDto, int>));
+            builder
+               .RegisterType(typeof(ResourceWalletTransactionRepository))
+               .As(typeof(IGenericRepository<ResourceWalletTransaction, int>));
 
             builder
                 .RegisterType(typeof(GameService))

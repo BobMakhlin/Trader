@@ -56,12 +56,18 @@
     <Compile Include="DbInitializers\MyDbInitializer.cs" />
     <Compile Include="DbModels\Game.cs" />
     <Compile Include="DbModels\Resource.cs" />
-    <Compile Include="DbModels\ResourceRate.cs" />
+    <Compile Include="DbModels\ResourceWallet.cs" />
+    <Compile Include="DbModels\ResourceWalletTransaction.cs" />
+    <Compile Include="DbModels\TradingResourceRate.cs" />
     <Compile Include="DbModels\TraderContext.cs" />
+    <Compile Include="DbModels\TradingResource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\GameRepository.cs" />
-    <Compile Include="Repositories\ResourceRateRepository.cs" />
+    <Compile Include="Repositories\ResourceWalletRepository.cs" />
+    <Compile Include="Repositories\ResourceWalletTransactionRepository.cs" />
+    <Compile Include="Repositories\TradingResourceRateRepository.cs" />
     <Compile Include="Repositories\ResourceRepository.cs" />
+    <Compile Include="Repositories\TradingResourceRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
