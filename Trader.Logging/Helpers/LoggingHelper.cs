@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel.Channels;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -37,42 +38,42 @@ namespace Trader.Logging.Helpers
         {
             lock (m_locker)
             {
-                m_logger.Trace(message, ex, null);
+                m_logger.Trace(ex, message);
             }
         }
         public void Debug(string message, Exception ex = null)
         {
             lock (m_locker)
             {
-                m_logger.Debug(message, ex, null);
+                m_logger.Debug(ex, message);
             }
         }
         public void Info (string message, Exception ex = null)
         {
             lock (m_locker)
             {
-                m_logger.Info(message, ex, null);
+                m_logger.Info(ex, message);
             }
         }
         public void Warn (string message, Exception ex = null)
         {
             lock (m_locker)
             {
-                m_logger.Warn(message, ex, null);
+                m_logger.Warn(ex, message);
             }
         }
         public void Error(string message, Exception ex = null)
         {
             lock (m_locker)
             {
-                m_logger.Error(message, ex, null);
+                m_logger.Error(ex, message);
             }
         }
         public void Fatal(string message, Exception ex = null)
         {
             lock (m_locker)
             {
-                m_logger.Fatal(message, ex, null);
+                m_logger.Fatal(ex, message);
             }
         }
         #endregion

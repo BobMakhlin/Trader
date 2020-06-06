@@ -89,6 +89,8 @@ namespace Trader.WPF.ViewModels.PageViewModels.Custom
         #region Methods
         protected virtual void OnGameLoaded(GameEventArgs e)
         {
+            LoggingHelper.Instance.Info($"The user wants to load the game #{e.GameId}");
+
             var temp = GameLoaded;
             temp?.Invoke(this, e);
         }
@@ -154,11 +156,15 @@ namespace Trader.WPF.ViewModels.PageViewModels.Custom
                     // Update the ui.
                     Games.Remove(SelectedGame);
                     SelectedGame = Games.FirstOrDefault();
+
+                    LoggingHelper.Instance.Debug($"The game #{gameToRemoveId} was removed");
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 m_dialog.MessageBoxOk("Something has gone wrong. Please, try again", "Removing error");
+
+                LoggingHelper.Instance.Error("Can't remove the game", ex);
             }
         }
         #endregion

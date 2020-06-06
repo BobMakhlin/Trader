@@ -5,10 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:pageVMs="clr-namespace:Trader.WPF.ViewModels.PageViewModels.Custom"
         xmlns:vws="clr-namespace:Trader.WPF.Views"
+        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:local="clr-namespace:Trader.WPF.Views"
         xmlns:converters="clr-namespace:Trader.WPF.Converters"
         mc:Ignorable="d"
         Title="Trader" Height="450" Width="800" Name="window">
+
+    <b:Interaction.Triggers>
+        <b:EventTrigger EventName="Closed">
+            <b:InvokeCommandAction Command="{Binding OnWindowClosingCommand}"/>
+        </b:EventTrigger>
+    </b:Interaction.Triggers>
 
     <Window.Resources>
         <converters:PathToUriConverter x:Key="pathToUriConverter"/>

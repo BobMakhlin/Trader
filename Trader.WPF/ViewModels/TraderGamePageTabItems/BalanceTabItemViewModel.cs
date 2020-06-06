@@ -7,6 +7,7 @@ using Trader.BLL.Infrastructure;
 using Trader.BLL.Services.Common;
 using Trader.BLL.Services.Extensions;
 using Trader.DAL.DbModels;
+using Trader.WPF.Infrastructure.MyEventArgs;
 using Trader.WPF.ViewModels.PageViewModels.Custom;
 using WPF.Common.Helpers;
 

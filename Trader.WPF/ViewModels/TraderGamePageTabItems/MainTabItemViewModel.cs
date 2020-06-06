@@ -12,6 +12,7 @@ using Trader.BLL.Services.Extensions;
 using Trader.DAL.DbModels;
 using Trader.Helpers.Common.ResourceRateHelpers;
 using Trader.Helpers.Common.ResourceRatesHelpers;
+using Trader.Logging.Helpers;
 using Trader.WPF.ViewModels.PageViewModels.Custom;
 using WPF.Common.Helpers;
 using WPF.Common.Helpers.MyRelayCommand;
@@ -174,14 +175,17 @@ namespace Trader.WPF.ViewModels.TraderGamePageTabItems
             try
             {
                 await m_walletTransactionService.SendResourcesAsync(goldWallet, destWallet, GoldToSpend, amountToSendToDestWallet);
-                MessageBox.Show("Transaction was successful");
+
+                m_parentViewModel.OnTransactionFinished(this, EventArgs.Empty);
+
+                LoggingHelper.Instance.Info($"The user has bought [{amountToSendToDestWallet} {selectedResourceRate.TradingResourceName}] for [{GoldToSpend} Gold]");
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Transaction failed");
-            }
 
-            m_parentViewModel.OnTransactionFinished(this, EventArgs.Empty);
+                LoggingHelper.Instance.Info($"Can't buy [{amountToSendToDestWallet} {ResourceToBuy.ResourceName}] for [{GoldToSpend} Gold]", ex);
+            }
         }
         bool CanBuyResource()
         {
@@ -203,11 +207,14 @@ namespace Trader.WPF.ViewModels.TraderGamePageTabItems
             try
             {
                 await m_walletTransactionService.SendResourcesAsync(sourceWallet, goldWallet, ResourceToSellAmount, amountToSendToDestWallet);
-                MessageBox.Show("Transaction was successful");
+
+                LoggingHelper.Instance.Info($"The user has sold [{ResourceToSellAmount} {ResourceToSell.ResourceName}] for [{amountToSendToDestWallet} Gold]");
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error");
+
+                LoggingHelper.Instance.Info($"Can't sell [{ResourceToSellAmount} {ResourceToSell.ResourceName}] for [{amountToSendToDestWallet} Gold]", ex);
             }
 
             m_parentViewModel.OnTransactionFinished(this, EventArgs.Empty);

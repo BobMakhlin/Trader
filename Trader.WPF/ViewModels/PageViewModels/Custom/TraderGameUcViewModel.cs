@@ -9,6 +9,7 @@ using Trader.BLL.Services.Common;
 using Trader.BLL.Services.Extensions;
 using Trader.DAL.DbModels;
 using Trader.Logging.Helpers;
+using Trader.WPF.Infrastructure.MyEventArgs;
 using Trader.WPF.ViewModels.PageViewModels.Common;
 using Trader.WPF.ViewModels.TraderGamePageTabItems;
 using WPF.Common.Helpers;
@@ -97,6 +98,8 @@ namespace Trader.WPF.ViewModels.PageViewModels.Custom
         {
             var temp = MoveFinished;
             temp?.Invoke(this, e);
+
+            LoggingHelper.Instance.Info($"The move of the game #{CurrentGame.GameId} was finished");
         }
 
         void InitServices()
@@ -140,10 +143,17 @@ namespace Trader.WPF.ViewModels.PageViewModels.Custom
         }
         async void FinishMoveAsync()
         {
-            CurrentGame.CurrentMoveNumber++;
-            CurrentGame = await m_gameService.AddOrUpdateAsync(CurrentGame);
+            try
+            {
+                CurrentGame.CurrentMoveNumber++;
+                CurrentGame = await m_gameService.AddOrUpdateAsync(CurrentGame);
 
-            OnMoveFinished(EventArgs.Empty);
+                OnMoveFinished(EventArgs.Empty);
+            }
+            catch (Exception ex)
+            {
+                LoggingHelper.Instance.Error($"Can't finish the move of the game #{CurrentGame.GameId}", ex);
+            }
         }
         #endregion
     }

@@ -13,8 +13,17 @@ namespace Trader.WPF
     {
         void OnApplicationStartup(object sender, StartupEventArgs e)
         {
-            var mainWindow = new MainWindow();
-            mainWindow.Show();
+            try
+            {
+                var mainWindow = new MainWindow();
+                mainWindow.Show();
+
+                LoggingHelper.Instance.Info("The program launching succeeded");
+            }
+            catch (Exception ex)
+            {
+                LoggingHelper.Instance.Fatal("The program launching failed", ex);
+            }
         }
     }
 }

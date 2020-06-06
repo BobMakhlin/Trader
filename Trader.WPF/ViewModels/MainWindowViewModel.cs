@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Input;
+using Trader.Logging.Helpers;
 using Trader.WPF.Infrastructure.MyEventArgs;
 using Trader.WPF.ViewModels.PageViewModels.Common;
 using Trader.WPF.ViewModels.PageViewModels.Custom;
@@ -36,6 +37,7 @@ namespace Trader.WPF.ViewModels
         #region Properties
         public ICommand OpenEnterGameNamePageCommand { get; set; }
         public ICommand OpenLoadGamePageCommand { get; set; }
+        public ICommand OnWindowClosingCommand { get; set; }
 
         public bool IsMenuOpened
         {
@@ -63,6 +65,7 @@ namespace Trader.WPF.ViewModels
         {
             OpenEnterGameNamePageCommand = new RelayCommand(OpenEnterGameNamePage);
             OpenLoadGamePageCommand = new RelayCommand(OpenLoadGamePage);
+            OnWindowClosingCommand = new RelayCommand(OnWindowClosing);
         }
 
         void OpenEnterGameNamePage()
@@ -97,11 +100,17 @@ namespace Trader.WPF.ViewModels
 
             IsMenuOpened = false;
         }
+        void OnWindowClosing()
+        {
+            LoggingHelper.Instance.Info("The program was closed");
+        }
 
         void OnGameChoosed(object sender, GameEventArgs e)
         {
             var vm = new TraderGameUcViewModel(e.GameId);
             CurrentPage = vm;
+
+            LoggingHelper.Instance.Info($"The game #{e.GameId} was loaded");
         }
 
         #endregion

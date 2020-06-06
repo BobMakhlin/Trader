@@ -53,6 +53,8 @@ namespace Trader.WPF.ViewModels.PageViewModels.Custom
         #region Methods
         protected virtual void OnGameCreated(GameEventArgs e)
         {
+            LoggingHelper.Instance.Debug($"The game #{e.GameId} was created successfully");
+
             var temp = GameCreated;
             temp?.Invoke(this, e);
         }

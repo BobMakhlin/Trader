@@ -9,6 +9,7 @@ using Trader.BLL.Infrastructure;
 using Trader.BLL.Services.Common;
 using Trader.BLL.Services.Extensions;
 using Trader.DAL.DbModels;
+using Trader.Logging.Helpers;
 using Trader.WPF.ViewModels.PageViewModels.Custom;
 using WPF.Common.Helpers;
 using WPF.Common.Helpers.MyRelayCommand;
@@ -106,11 +107,14 @@ namespace Trader.WPF.ViewModels.TraderGamePageTabItems
             try
             {
                 await m_walletTransactionService.SendResourcesAsync(sourceWallet, destWallet, SourceResourceCount, amountToSendToDestWallet);
-                MessageBox.Show("Transaction was successful");
+
+                LoggingHelper.Instance.Info($"The user has exchanged [{SourceResourceCount} {SourceResource.ResourceName}] for [{amountToSendToDestWallet} {DestResource.ResourceName}]");
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Transaction failed");
+
+                LoggingHelper.Instance.Info($"Can't exchange [{SourceResourceCount} {SourceResource.ResourceName}] for [{amountToSendToDestWallet} {DestResource.ResourceName}]", ex);
             }
 
             m_parentViewModel.OnTransactionFinished(this, EventArgs.Empty);
