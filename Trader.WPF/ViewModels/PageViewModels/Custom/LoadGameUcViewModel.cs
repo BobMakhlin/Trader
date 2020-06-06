@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Trader.BLL.BusinessModels;
 using Trader.BLL.Infrastructure;
 using Trader.BLL.Services.Common;
 using Trader.BLL.Services.Extensions;
 using Trader.DAL.DbModels;
+using Trader.Logging.Helpers;
 using Trader.WPF.Infrastructure.MyEventArgs;
 using Trader.WPF.ViewModels.PageViewModels.Common;
 using WPF.Common.Helpers;
@@ -18,9 +18,8 @@ namespace Trader.WPF.ViewModels.PageViewModels.Custom
 {
     class LoadGameUcViewModel : NotifyPropertyChanged, IPageViewModel
     {
-        #region Private Definitions
-
-        ObservableCollection<GameDto> games;
+        #region Fields
+        ObservableCollection<GameDto> m_games;
         GameDto m_selectedGame;
         bool m_progressBarAnimationEnabled;
         bool m_uiEnabled;
@@ -50,10 +49,10 @@ namespace Trader.WPF.ViewModels.PageViewModels.Custom
 
         public ObservableCollection<GameDto> Games
         {
-            get => games;
+            get => m_games;
             set
             {
-                games = value;
+                m_games = value;
                 RaisePropertyChanged();
             }
         }
@@ -136,6 +135,12 @@ namespace Trader.WPF.ViewModels.PageViewModels.Custom
         }
         async void DeleteSelectedGameAsync()
         {
+            if (SelectedGame == null)
+            {
+                m_dialog.MessageBoxOk("Please select a game and try again", "Removing error");
+                return;
+            }
+
             try
             {
                 var dialogResult = m_dialog.MessageBoxYesNo("Are sure you want to remove it?", "Question");
@@ -143,16 +148,13 @@ namespace Trader.WPF.ViewModels.PageViewModels.Custom
                 if (dialogResult == DialogResult.Yes)
                 {
                     // Remove from the db.
-                    await m_gameService.CallUpRemoveGameByIdAsync(SelectedGame.GameId);
+                    int gameToRemoveId = SelectedGame.GameId;
+                    await m_gameService.CallUpRemoveGameByIdAsync(gameToRemoveId);
 
                     // Update the ui.
                     Games.Remove(SelectedGame);
                     SelectedGame = Games.FirstOrDefault();
                 }
-            }
-            catch (NullReferenceException)
-            {
-                m_dialog.MessageBoxOk("Please select a game and try again", "Removing error");
             }
             catch (Exception)
             {
@@ -160,6 +162,5 @@ namespace Trader.WPF.ViewModels.PageViewModels.Custom
             }
         }
         #endregion
-
     }
 }

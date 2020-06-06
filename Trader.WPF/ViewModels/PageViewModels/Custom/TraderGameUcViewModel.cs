@@ -8,6 +8,7 @@ using Trader.BLL.Infrastructure;
 using Trader.BLL.Services.Common;
 using Trader.BLL.Services.Extensions;
 using Trader.DAL.DbModels;
+using Trader.Logging.Helpers;
 using Trader.WPF.ViewModels.PageViewModels.Common;
 using Trader.WPF.ViewModels.TraderGamePageTabItems;
 using WPF.Common.Helpers;
@@ -41,8 +42,8 @@ namespace Trader.WPF.ViewModels.PageViewModels.Custom
         #endregion
 
         #region Events
-        public event EventHandler MoveFinished;
         public event EventHandler TransactionFinished;
+        public event EventHandler MoveFinished;
         #endregion
 
         #region Properties
@@ -87,12 +88,15 @@ namespace Trader.WPF.ViewModels.PageViewModels.Custom
         #endregion
 
         #region Methods
-        /// <summary>
-        /// Raise the event TransactionFinished.
-        /// </summary>
-        public void RaiseTransactionFinished(object sender, EventArgs e)
+        public virtual void OnTransactionFinished(object sender, EventArgs e)
         {
-            TransactionFinished?.Invoke(sender, e);
+            var temp = TransactionFinished;
+            temp?.Invoke(sender, e);
+        }
+        protected virtual void OnMoveFinished(EventArgs e)
+        {
+            var temp = MoveFinished;
+            temp?.Invoke(this, e);
         }
 
         void InitServices()
@@ -109,8 +113,8 @@ namespace Trader.WPF.ViewModels.PageViewModels.Custom
         }
         async Task InitInnerViewModelsAsync()
         {
-            ExchangerTabItemVm = new ExchangerTabItemViewModel(this);
             MainTabItemVm = await MainTabItemViewModel.CreateAsync(this);
+            ExchangerTabItemVm = new ExchangerTabItemViewModel(this);
             BalanceTabItemVm = await BalanceTabItemViewModel.CreateAsync(this);
         }
 
@@ -139,7 +143,7 @@ namespace Trader.WPF.ViewModels.PageViewModels.Custom
             CurrentGame.CurrentMoveNumber++;
             CurrentGame = await m_gameService.AddOrUpdateAsync(CurrentGame);
 
-            MoveFinished?.Invoke(this, EventArgs.Empty);
+            OnMoveFinished(EventArgs.Empty);
         }
         #endregion
     }

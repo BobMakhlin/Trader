@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="DbInitializers\MyDbInitializer.cs" />
     <Compile Include="DbModels\Game.cs" />
+    <Compile Include="DbModels\Log.cs" />
     <Compile Include="DbModels\Resource.cs" />
     <Compile Include="DbModels\ResourceWallet.cs" />
     <Compile Include="DbModels\ResourceWalletTransaction.cs" />
@@ -75,6 +76,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\Trader.Logging\Trader.Logging.csproj">
+      <Project>{B70217A5-A79C-42A0-8E8C-0EE455F38456}</Project>
+      <Name>Trader.Logging</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Trader.Repository\Trader.Repository.csproj">
       <Project>{C9B171EC-BB4A-4A0F-ABA3-D65B169445D3}</Project>
       <Name>Trader.Repository</Name>

@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Trader.BLL.BusinessModels;
 using Trader.BLL.Infrastructure;
 using Trader.BLL.Services.Common;
-using Trader.DAL.DbModels;
-using WPF.Common.Helpers;
-using System.Linq;
 using Trader.BLL.Services.Extensions;
-using System;
+using Trader.DAL.DbModels;
 using Trader.WPF.ViewModels.PageViewModels.Custom;
+using WPF.Common.Helpers;
 
 namespace Trader.WPF.ViewModels.TraderGamePageTabItems
 {
@@ -68,7 +68,7 @@ namespace Trader.WPF.ViewModels.TraderGamePageTabItems
 
                        from tran in ts.DefaultIfEmpty()
 
-                       // If there is no transactions by current resource, pass zero.
+                           // If there is no transactions by current resource, pass zero.
                        group (tran != null ? tran.ResourceCount : 0) by res.ResourceName
                     )
                     .ToList

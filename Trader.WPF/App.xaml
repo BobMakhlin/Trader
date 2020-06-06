@@ -1,9 +1,11 @@
 ﻿<Application
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Trader.WPF"
-             xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" x:Class="Trader.WPF.App"
-             StartupUri="Views/MainWindow.xaml">
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:Trader.WPF"
+    xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" 
+    x:Class="Trader.WPF.App"
+    Startup="OnApplicationStartup">
+    
     <Application.Resources>
 
         <SolidColorBrush x:Key="TraderBackgroundBrush" Color="#80402c" Opacity="0.55"/>

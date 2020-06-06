@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Trader.BLL.BusinessModels;
@@ -101,19 +100,20 @@ namespace Trader.WPF.ViewModels.TraderGamePageTabItems
 
             // Send resources to the destination wallet.
 
-            double amountToSendToDestWallet 
+            double amountToSendToDestWallet
                 = SourceResourceCount * sourceResourceRate.TradingResourcePrice / destResourceRate.TradingResourcePrice;
 
             try
             {
                 await m_walletTransactionService.SendResourcesAsync(sourceWallet, destWallet, SourceResourceCount, amountToSendToDestWallet);
+                MessageBox.Show("Transaction was successful");
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error");
+                MessageBox.Show(ex.Message, "Transaction failed");
             }
 
-            m_parentViewModel.RaiseTransactionFinished(this, EventArgs.Empty);
+            m_parentViewModel.OnTransactionFinished(this, EventArgs.Empty);
         }
         bool CanConvertResource()
         {

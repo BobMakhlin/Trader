@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -175,13 +174,14 @@ namespace Trader.WPF.ViewModels.TraderGamePageTabItems
             try
             {
                 await m_walletTransactionService.SendResourcesAsync(goldWallet, destWallet, GoldToSpend, amountToSendToDestWallet);
+                MessageBox.Show("Transaction was successful");
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error");
+                MessageBox.Show(ex.Message, "Transaction failed");
             }
 
-            m_parentViewModel.RaiseTransactionFinished(this, EventArgs.Empty);
+            m_parentViewModel.OnTransactionFinished(this, EventArgs.Empty);
         }
         bool CanBuyResource()
         {
@@ -203,13 +203,14 @@ namespace Trader.WPF.ViewModels.TraderGamePageTabItems
             try
             {
                 await m_walletTransactionService.SendResourcesAsync(sourceWallet, goldWallet, ResourceToSellAmount, amountToSendToDestWallet);
+                MessageBox.Show("Transaction was successful");
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error");
             }
 
-            m_parentViewModel.RaiseTransactionFinished(this, EventArgs.Empty);
+            m_parentViewModel.OnTransactionFinished(this, EventArgs.Empty);
         }
         bool CanSellResource()
         {

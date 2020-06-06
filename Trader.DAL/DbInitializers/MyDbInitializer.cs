@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data.Entity;
 using Trader.DAL.DbModels;
+using Trader.Logging.Helpers;
 
 namespace Trader.DAL.DbInitializers
 {
@@ -123,6 +119,8 @@ namespace Trader.DAL.DbInitializers
                 end
             ";
             context.Database.ExecuteSqlCommand(createFunc);
+
+            LoggingHelper.Instance.Info("DB creatiation: succeeded");
         }
     }
 }

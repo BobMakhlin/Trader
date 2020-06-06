@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Trader.BLL.BusinessModels;
-using Trader.BLL.Infrastructure;
 using Trader.BLL.Services.Common;
 using Trader.DAL.DbModels;
 using Trader.Helpers.Common.ResourceRateHelpers;

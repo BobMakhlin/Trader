@@ -1,10 +1,5 @@
 ﻿using AutoMapper;
 using AutoMapper.Extensions.ExpressionMapping;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Trader.BLL.BusinessModels;
 using Trader.BLL.Services.Common;
 using Trader.DAL.DbModels;

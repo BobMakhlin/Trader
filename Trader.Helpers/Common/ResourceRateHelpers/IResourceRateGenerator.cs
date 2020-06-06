@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Trader.BLL.BusinessModels;
+﻿using Trader.BLL.BusinessModels;
 
 namespace Trader.Helpers.Common.ResourceRateHelpers
 {

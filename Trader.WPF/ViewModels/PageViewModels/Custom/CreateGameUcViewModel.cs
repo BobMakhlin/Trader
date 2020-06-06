@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -10,6 +9,7 @@ using Trader.BLL.Services.Extensions;
 using Trader.DAL.DbModels;
 using Trader.Helpers.Common.ResourceRateHelpers;
 using Trader.Helpers.Common.ResourceRatesHelpers;
+using Trader.Logging.Helpers;
 using Trader.WPF.Infrastructure.MyEventArgs;
 using Trader.WPF.ViewModels.PageViewModels.Common;
 using WPF.Common.Helpers.MyRelayCommand;
@@ -20,7 +20,7 @@ namespace Trader.WPF.ViewModels.PageViewModels.Custom
     {
         #region Fields
         ResourcesRatesHelper m_ratesHelper;
-        
+
         IGenericService<Game, GameDto, int> m_gamesService;
         IGenericService<Resource, ResourceDto, int> m_resourceService;
         IGenericService<TradingResource, TradingResourceDto, int> m_tradingResourceService;
@@ -51,7 +51,7 @@ namespace Trader.WPF.ViewModels.PageViewModels.Custom
         #endregion
 
         #region Methods
-        protected void OnGameCreated(GameEventArgs e)
+        protected virtual void OnGameCreated(GameEventArgs e)
         {
             var temp = GameCreated;
             temp?.Invoke(this, e);

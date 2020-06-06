@@ -160,6 +160,10 @@
       <Project>{d32eaaf1-c5d7-4987-b266-276257714e56}</Project>
       <Name>Trader.Helpers</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Trader.Logging\Trader.Logging.csproj">
+      <Project>{b70217a5-a79c-42a0-8e8c-0ee455f38456}</Project>
+      <Name>Trader.Logging</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WPF.Common\WPF.Common\WPF.Common.csproj">
       <Project>{F8250045-B106-4790-A807-31BBBB0FAE3E}</Project>
       <Name>WPF.Common</Name>

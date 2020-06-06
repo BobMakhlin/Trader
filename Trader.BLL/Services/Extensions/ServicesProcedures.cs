@@ -1,11 +1,11 @@
 ﻿using System.Data.Entity;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Threading.Tasks;
 using Trader.BLL.BusinessModels;
 using Trader.BLL.Infrastructure;
 using Trader.BLL.Services.Common;
 using Trader.DAL.DbModels;
-using System.Linq;
 
 namespace Trader.BLL.Services.Extensions
 {
@@ -27,8 +27,8 @@ namespace Trader.BLL.Services.Extensions
         /// </summary>
         public static double? CallSfGetWalletBalance
         (
-            this IGenericService<ResourceWalletTransaction, ResourceWalletTransactionDto, int> service, 
-            int gameId, 
+            this IGenericService<ResourceWalletTransaction, ResourceWalletTransactionDto, int> service,
+            int gameId,
             int resourceId
         )
         {

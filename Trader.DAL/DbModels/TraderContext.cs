@@ -1,8 +1,6 @@
 namespace Trader.DAL.DbModels
 {
-    using System;
     using System.Data.Entity;
-    using System.Linq;
     using Trader.DAL.DbInitializers;
 
     public class TraderContext : DbContext
@@ -17,5 +15,6 @@ namespace Trader.DAL.DbModels
         public virtual DbSet<Resource> Resources { get; set; }
         public virtual DbSet<TradingResource> TradingResources { get; set; }
         public virtual DbSet<TradingResourceRate> TradingResourcesRates { get; set; }
+        public virtual DbSet<Log> Logs { get; set; }
     }
 }

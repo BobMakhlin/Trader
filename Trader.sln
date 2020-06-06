@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPF.Common", "WPF.Common\WP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trader.Helpers", "Trader.Helpers\Trader.Helpers.csproj", "{D32EAAF1-C5D7-4987-B266-276257714E56}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trader.Logging", "Trader.Logging\Trader.Logging.csproj", "{B70217A5-A79C-42A0-8E8C-0EE455F38456}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{D32EAAF1-C5D7-4987-B266-276257714E56}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D32EAAF1-C5D7-4987-B266-276257714E56}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D32EAAF1-C5D7-4987-B266-276257714E56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B70217A5-A79C-42A0-8E8C-0EE455F38456}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B70217A5-A79C-42A0-8E8C-0EE455F38456}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B70217A5-A79C-42A0-8E8C-0EE455F38456}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B70217A5-A79C-42A0-8E8C-0EE455F38456}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

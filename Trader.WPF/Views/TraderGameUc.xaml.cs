@@ -1,5 +1,4 @@
 ﻿using System.Windows.Controls;
-using Trader.WPF.ViewModels;
 
 namespace Trader.WPF.Views
 {

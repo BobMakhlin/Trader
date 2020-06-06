@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Windows;
 using System.Windows.Input;
-using Trader.WPF.Helpers;
 using Trader.WPF.Infrastructure.MyEventArgs;
 using Trader.WPF.ViewModels.PageViewModels.Common;
 using Trader.WPF.ViewModels.PageViewModels.Custom;

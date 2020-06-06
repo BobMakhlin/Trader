@@ -11,7 +11,7 @@ namespace Trader.WPF.Views
         public MainWindow()
         {
             InitializeComponent();
-            this.DataContext = new MainWindowViewModel();
+            DataContext = new MainWindowViewModel();
         }
     }
 }
