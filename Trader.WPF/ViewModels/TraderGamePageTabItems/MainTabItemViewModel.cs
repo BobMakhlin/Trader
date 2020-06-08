@@ -1,9 +1,11 @@
 ﻿using LinqKit;
+using Prism.Commands;
+using Prism.Mvvm;
+using Prism.Services.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 using Trader.BLL.BusinessModels;
 using Trader.BLL.Infrastructure;
@@ -13,13 +15,14 @@ using Trader.DAL.DbModels;
 using Trader.Helpers.Common.ResourceRateHelpers;
 using Trader.Helpers.Common.ResourceRatesHelpers;
 using Trader.Logging.Helpers;
+using Trader.WPF.Helpers;
+using Trader.WPF.Infrastructure.MyEventArgs;
 using Trader.WPF.ViewModels.PageViewModels.Custom;
-using WPF.Common.Helpers;
 using WPF.Common.Helpers.MyRelayCommand;
 
 namespace Trader.WPF.ViewModels.TraderGamePageTabItems
 {
-    class MainTabItemViewModel : NotifyPropertyChanged, IDataErrorInfo
+    class MainTabItemViewModel : BindableBase, IDataErrorInfo
     {
         #region Fields
         TraderGameUcViewModel m_parentViewModel;
@@ -31,6 +34,8 @@ namespace Trader.WPF.ViewModels.TraderGamePageTabItems
         ResourcesRatesHelper m_rateHelper;
 
         List<TradingResourceRateDto> m_tradingResourcesRates;
+
+        IDialogService m_dialogService;
         #endregion
 
         #region Constructors
@@ -94,11 +99,12 @@ namespace Trader.WPF.ViewModels.TraderGamePageTabItems
         #endregion
 
         #region Methods
-        public static async Task<MainTabItemViewModel> CreateAsync(TraderGameUcViewModel parentViewModel)
+        public static async Task<MainTabItemViewModel> CreateAsync(TraderGameUcViewModel parentViewModel, IDialogService dialogService)
         {
             var vm = new MainTabItemViewModel()
             {
-                m_parentViewModel = parentViewModel
+                m_parentViewModel = parentViewModel,
+                m_dialogService = dialogService
             };
             await vm.InitAsync();
 
@@ -176,15 +182,22 @@ namespace Trader.WPF.ViewModels.TraderGamePageTabItems
             {
                 await m_walletTransactionService.SendResourcesAsync(goldWallet, destWallet, GoldToSpend, amountToSendToDestWallet);
 
-                m_parentViewModel.OnTransactionFinished(this, EventArgs.Empty);
+                var args = new TransactionEventArgs
+                {
+                    SourceWallet = goldWallet,
+                    AmountWithdrawnFromSourceWallet = GoldToSpend,
+                    DestWallet = destWallet,
+                    AmountSentToDestWallet = amountToSendToDestWallet
+                };
+                m_parentViewModel.RaiseTransactionFinished(this, args);
 
                 LoggingHelper.Instance.Info($"The user has bought [{amountToSendToDestWallet} {selectedResourceRate.TradingResourceName}] for [{GoldToSpend} Gold]");
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Transaction failed");
-
                 LoggingHelper.Instance.Info($"Can't buy [{amountToSendToDestWallet} {ResourceToBuy.ResourceName}] for [{GoldToSpend} Gold]", ex);
+
+                m_dialogService.MessageBoxOk("Error", $"Transaction failed. {ex.Message}");
             }
         }
         bool CanBuyResource()
@@ -208,16 +221,23 @@ namespace Trader.WPF.ViewModels.TraderGamePageTabItems
             {
                 await m_walletTransactionService.SendResourcesAsync(sourceWallet, goldWallet, ResourceToSellAmount, amountToSendToDestWallet);
 
+                var args = new TransactionEventArgs
+                {
+                    SourceWallet = sourceWallet,
+                    AmountWithdrawnFromSourceWallet = ResourceToSellAmount,
+                    DestWallet = goldWallet,
+                    AmountSentToDestWallet = amountToSendToDestWallet
+                };
+                m_parentViewModel.RaiseTransactionFinished(this, args);
+
                 LoggingHelper.Instance.Info($"The user has sold [{ResourceToSellAmount} {ResourceToSell.ResourceName}] for [{amountToSendToDestWallet} Gold]");
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error");
-
                 LoggingHelper.Instance.Info($"Can't sell [{ResourceToSellAmount} {ResourceToSell.ResourceName}] for [{amountToSendToDestWallet} Gold]", ex);
-            }
 
-            m_parentViewModel.OnTransactionFinished(this, EventArgs.Empty);
+                m_dialogService.MessageBoxOk("Error", $"Transaction failed. {ex.Message}");
+            }
         }
         bool CanSellResource()
         {

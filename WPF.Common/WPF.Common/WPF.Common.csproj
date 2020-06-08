@@ -44,14 +44,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Converters\ColorToBrushConverter.cs" />
-    <Compile Include="Helpers\MyRelayCommand\RelayCommandGeneric.cs" />
-    <Compile Include="Helpers\NotifyPropertyChanged.cs" />
     <Compile Include="Helpers\MyRelayCommand\RelayCommand.cs" />
-    <Compile Include="Infrastructure\DialogService\DialogResult.cs" />
-    <Compile Include="Infrastructure\DialogService\DialogService.cs" />
-    <Compile Include="Infrastructure\DialogService\IDialogService.cs" />
-    <Compile Include="Infrastructure\WindowServices\IClosable.cs" />
-    <Compile Include="Infrastructure\WindowServices\IWindowService.cs" />
+    <Compile Include="Helpers\MyRelayCommand\RelayCommandGeneric.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

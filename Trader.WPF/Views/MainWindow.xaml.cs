@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using Trader.WPF.ViewModels;
 
 namespace Trader.WPF.Views
 {
@@ -11,7 +10,6 @@ namespace Trader.WPF.Views
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainWindowViewModel();
         }
     }
 }

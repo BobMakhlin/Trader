@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Prism.Commands;
+using Prism.Mvvm;
+using Prism.Services.Dialogs;
+using System;
 using System.Collections.Generic;
-using System.Windows.Input;
 using Trader.Logging.Helpers;
 using Trader.WPF.Infrastructure.MyEventArgs;
 using Trader.WPF.ViewModels.PageViewModels.Common;
 using Trader.WPF.ViewModels.PageViewModels.Custom;
-using WPF.Common.Helpers;
 using WPF.Common.Helpers.MyRelayCommand;
-using WPF.Common.Services;
 
 /*
     «Нет ничего невозможного. Само слово говорит: „Я возможно!“ (Impossible — I'm possible)» — Одри Хепбёрн. 
@@ -15,48 +15,43 @@ using WPF.Common.Services;
 
 namespace Trader.WPF.ViewModels
 {
-    class MainWindowViewModel : NotifyPropertyChanged
+    class MainWindowViewModel : BindableBase
     {
         #region Fields
         bool m_menuOpened;
         IPageViewModel m_currentPage;
         Dictionary<Type, IPageViewModel> m_savedViewModels;
+
+        IDialogService m_dialogService;
         #endregion
 
         #region Constructors
-        public MainWindowViewModel()
+        public MainWindowViewModel(IDialogService dialogService)
         {
             InitCommands();
 
             m_savedViewModels = new Dictionary<Type, IPageViewModel>();
+            m_dialogService = dialogService;
 
             OpenEnterGameNamePage();
         }
         #endregion
 
         #region Properties
-        public ICommand OpenEnterGameNamePageCommand { get; set; }
-        public ICommand OpenLoadGamePageCommand { get; set; }
-        public ICommand OnWindowClosingCommand { get; set; }
+        public RelayCommand OpenEnterGameNamePageCommand { get; set; }
+        public RelayCommand OpenLoadGamePageCommand { get; set; }
+        public RelayCommand OnWindowClosingCommand { get; set; }
 
         public bool IsMenuOpened
         {
             get => m_menuOpened;
-            set
-            {
-                m_menuOpened = value;
-                RaisePropertyChanged();
-            }
+            set => SetProperty(ref m_menuOpened, value);
         }
 
         public IPageViewModel CurrentPage
         {
             get => m_currentPage;
-            set
-            {
-                m_currentPage = value;
-                RaisePropertyChanged();
-            }
+            set => SetProperty(ref m_currentPage, value);
         }
         #endregion
 
@@ -90,7 +85,7 @@ namespace Trader.WPF.ViewModels
             bool containsVm = m_savedViewModels.TryGetValue(typeof(LoadGameUcViewModel), out pageVm);
             if (!containsVm)
             {
-                var vm = new LoadGameUcViewModel(new DialogService());
+                var vm = new LoadGameUcViewModel(m_dialogService);
                 vm.GameLoaded += OnGameChoosed;
 
                 pageVm = vm;
@@ -107,7 +102,7 @@ namespace Trader.WPF.ViewModels
 
         void OnGameChoosed(object sender, GameEventArgs e)
         {
-            var vm = new TraderGameUcViewModel(e.GameId);
+            var vm = new TraderGameUcViewModel(e.GameId, m_dialogService);
             CurrentPage = vm;
 
             LoggingHelper.Instance.Info($"The game #{e.GameId} was loaded");

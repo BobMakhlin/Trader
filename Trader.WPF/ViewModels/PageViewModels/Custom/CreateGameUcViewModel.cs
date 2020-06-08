@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Prism.Commands;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Trader.BLL.BusinessModels;
 using Trader.BLL.Infrastructure;
 using Trader.BLL.Services.Common;
@@ -45,7 +45,7 @@ namespace Trader.WPF.ViewModels.PageViewModels.Custom
         #endregion
 
         #region Properties
-        public ICommand CreateGameCommand { get; set; }
+        public RelayCommand CreateGameCommand { get; set; }
 
         public string GameName { get; set; }
         #endregion

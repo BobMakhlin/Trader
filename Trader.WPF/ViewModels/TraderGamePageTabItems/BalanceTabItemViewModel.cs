@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Prism.Mvvm;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,13 +8,11 @@ using Trader.BLL.Infrastructure;
 using Trader.BLL.Services.Common;
 using Trader.BLL.Services.Extensions;
 using Trader.DAL.DbModels;
-using Trader.WPF.Infrastructure.MyEventArgs;
 using Trader.WPF.ViewModels.PageViewModels.Custom;
-using WPF.Common.Helpers;
 
 namespace Trader.WPF.ViewModels.TraderGamePageTabItems
 {
-    class BalanceTabItemViewModel : NotifyPropertyChanged
+    class BalanceTabItemViewModel : BindableBase
     {
         #region Fields
         List<IGrouping<string, double>> m_walletTransactions;
@@ -35,8 +34,7 @@ namespace Trader.WPF.ViewModels.TraderGamePageTabItems
             get => m_walletTransactions;
             set
             {
-                m_walletTransactions = value;
-                RaisePropertyChanged();
+                SetProperty(ref m_walletTransactions, value);
             }
         }
         #endregion

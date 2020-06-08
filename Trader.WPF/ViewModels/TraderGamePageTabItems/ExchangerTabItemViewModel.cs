@@ -1,8 +1,10 @@
 ﻿using LinqKit;
+using Prism.Commands;
+using Prism.Mvvm;
+using Prism.Services.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Windows;
 using System.Windows.Input;
 using Trader.BLL.BusinessModels;
 using Trader.BLL.Infrastructure;
@@ -10,25 +12,28 @@ using Trader.BLL.Services.Common;
 using Trader.BLL.Services.Extensions;
 using Trader.DAL.DbModels;
 using Trader.Logging.Helpers;
+using Trader.WPF.Infrastructure.MyEventArgs;
 using Trader.WPF.ViewModels.PageViewModels.Custom;
-using WPF.Common.Helpers;
 using WPF.Common.Helpers.MyRelayCommand;
 
 namespace Trader.WPF.ViewModels.TraderGamePageTabItems
 {
-    class ExchangerTabItemViewModel : NotifyPropertyChanged, IDataErrorInfo
+    class ExchangerTabItemViewModel : BindableBase, IDataErrorInfo
     {
         #region Fields
         IGenericService<TradingResourceRate, TradingResourceRateDto, int> m_resourceRateService;
         IGenericService<ResourceWalletTransaction, ResourceWalletTransactionDto, int> m_walletTransactionService;
 
         TraderGameUcViewModel m_parentViewModel;
+
+        IDialogService m_dialogService;
         #endregion
 
         #region Constructors
-        public ExchangerTabItemViewModel(TraderGameUcViewModel parentViewModel)
+        public ExchangerTabItemViewModel(TraderGameUcViewModel parentViewModel, IDialogService dialogService)
         {
             m_parentViewModel = parentViewModel;
+            m_dialogService = dialogService;
 
             InitCommands();
             InitServices();
@@ -59,7 +64,7 @@ namespace Trader.WPF.ViewModels.TraderGamePageTabItems
         #endregion
 
         #region Properties
-        public ICommand ConvertResourceCommand { get; set; }
+        public RelayCommand ConvertResourceCommand { get; set; }
 
         public List<TradingResourceRateDto> TradingResourcesRates { get; set; }
         public double SourceResourceCount { get; set; }
@@ -108,16 +113,21 @@ namespace Trader.WPF.ViewModels.TraderGamePageTabItems
             {
                 await m_walletTransactionService.SendResourcesAsync(sourceWallet, destWallet, SourceResourceCount, amountToSendToDestWallet);
 
+                var args = new TransactionEventArgs
+                {
+                    SourceWallet = sourceWallet,
+                    AmountWithdrawnFromSourceWallet = SourceResourceCount,
+                    DestWallet = destWallet,
+                    AmountSentToDestWallet = amountToSendToDestWallet
+                };
+                m_parentViewModel.RaiseTransactionFinished(this, args);
+
                 LoggingHelper.Instance.Info($"The user has exchanged [{SourceResourceCount} {SourceResource.ResourceName}] for [{amountToSendToDestWallet} {DestResource.ResourceName}]");
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Transaction failed");
-
                 LoggingHelper.Instance.Info($"Can't exchange [{SourceResourceCount} {SourceResource.ResourceName}] for [{amountToSendToDestWallet} {DestResource.ResourceName}]", ex);
             }
-
-            m_parentViewModel.OnTransactionFinished(this, EventArgs.Empty);
         }
         bool CanConvertResource()
         {

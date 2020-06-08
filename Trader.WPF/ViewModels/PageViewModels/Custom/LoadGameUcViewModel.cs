@@ -1,6 +1,10 @@
-﻿using System;
+﻿using Prism.Commands;
+using Prism.Mvvm;
+using Prism.Services.Dialogs;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Trader.BLL.BusinessModels;
 using Trader.BLL.Infrastructure;
@@ -8,15 +12,14 @@ using Trader.BLL.Services.Common;
 using Trader.BLL.Services.Extensions;
 using Trader.DAL.DbModels;
 using Trader.Logging.Helpers;
+using Trader.WPF.Helpers;
 using Trader.WPF.Infrastructure.MyEventArgs;
 using Trader.WPF.ViewModels.PageViewModels.Common;
-using WPF.Common.Helpers;
 using WPF.Common.Helpers.MyRelayCommand;
-using WPF.Common.Services;
 
 namespace Trader.WPF.ViewModels.PageViewModels.Custom
 {
-    class LoadGameUcViewModel : NotifyPropertyChanged, IPageViewModel
+    class LoadGameUcViewModel : BindableBase, IPageViewModel
     {
         #region Fields
         ObservableCollection<GameDto> m_games;
@@ -26,15 +29,15 @@ namespace Trader.WPF.ViewModels.PageViewModels.Custom
 
         IGenericService<Game, GameDto, int> m_gameService;
 
-        IDialogService m_dialog;
+        IDialogService m_dialogService;
         #endregion
 
         #region Constructors
         public LoadGameUcViewModel(IDialogService dialogService)
         {
-            InitCommands();
+            m_dialogService = dialogService;
 
-            m_dialog = dialogService;
+            InitCommands();
         }
         #endregion
 
@@ -99,7 +102,7 @@ namespace Trader.WPF.ViewModels.PageViewModels.Custom
         {
             OnPageLoadedCommand = new RelayCommand(OnPageLoadedAsync);
             LoadSelectedGameCommand = new RelayCommand(LoadSelectedGame);
-            DeleteSelectedGameCommand = new RelayCommand(DeleteSelectedGameAsync);
+            DeleteSelectedGameCommand = new RelayCommand(DeleteSelectedGame);
         }
         void InitServices()
         {
@@ -128,41 +131,47 @@ namespace Trader.WPF.ViewModels.PageViewModels.Custom
             }
             catch (NullReferenceException)
             {
-                m_dialog.MessageBoxOk("Please select a game and try again", "Loading error");
+                m_dialogService.MessageBoxOk("Loading error", "Please select a game and try again");
             }
             catch (Exception)
             {
-                m_dialog.MessageBoxOk("Something has gone wrong. Please, try again", "Loading error");
+                m_dialogService.MessageBoxOk("Loading error", "Something has gone wrong. Please, try again");
             }
         }
-        async void DeleteSelectedGameAsync()
+        void DeleteSelectedGame()
         {
             if (SelectedGame == null)
             {
-                m_dialog.MessageBoxOk("Please select a game and try again", "Removing error");
+                m_dialogService.MessageBoxOk("Removing error", "Please select a game and try again");
                 return;
             }
 
             try
             {
-                var dialogResult = m_dialog.MessageBoxYesNo("Are sure you want to remove it?", "Question");
+                m_dialogService.MessageBoxYesNo
+                (
+                    "Question", 
+                    "Are you sure you want to delete this game?",
+                    async (IDialogResult answer) =>
+                    {
+                        if (answer.Result == ButtonResult.Yes)
+                        {
+                            // Remove from the db.
+                            int gameToRemoveId = SelectedGame.GameId;
+                            await m_gameService.CallUpRemoveGameByIdAsync(gameToRemoveId);
 
-                if (dialogResult == DialogResult.Yes)
-                {
-                    // Remove from the db.
-                    int gameToRemoveId = SelectedGame.GameId;
-                    await m_gameService.CallUpRemoveGameByIdAsync(gameToRemoveId);
+                            // Update the ui.
+                            Games.Remove(SelectedGame);
+                            SelectedGame = Games.FirstOrDefault();
 
-                    // Update the ui.
-                    Games.Remove(SelectedGame);
-                    SelectedGame = Games.FirstOrDefault();
-
-                    LoggingHelper.Instance.Debug($"The game #{gameToRemoveId} was removed");
-                }
+                            LoggingHelper.Instance.Debug($"The game #{gameToRemoveId} was removed");
+                        }
+                    }
+                );
             }
             catch (Exception ex)
             {
-                m_dialog.MessageBoxOk("Something has gone wrong. Please, try again", "Removing error");
+                m_dialogService.MessageBoxOk("Removing error", "Something has gone wrong. Please, try again");
 
                 LoggingHelper.Instance.Error("Can't remove the game", ex);
             }

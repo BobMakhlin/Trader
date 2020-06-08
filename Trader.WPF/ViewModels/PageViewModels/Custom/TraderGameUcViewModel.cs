@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Prism.Commands;
+using Prism.Mvvm;
+using Prism.Services.Dialogs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,15 +12,15 @@ using Trader.BLL.Services.Common;
 using Trader.BLL.Services.Extensions;
 using Trader.DAL.DbModels;
 using Trader.Logging.Helpers;
+using Trader.WPF.Helpers;
 using Trader.WPF.Infrastructure.MyEventArgs;
 using Trader.WPF.ViewModels.PageViewModels.Common;
 using Trader.WPF.ViewModels.TraderGamePageTabItems;
-using WPF.Common.Helpers;
 using WPF.Common.Helpers.MyRelayCommand;
 
 namespace Trader.WPF.ViewModels.PageViewModels.Custom
 {
-    class TraderGameUcViewModel : NotifyPropertyChanged, IPageViewModel
+    class TraderGameUcViewModel : BindableBase, IPageViewModel
     {
         #region Fields
         IGenericService<Game, GameDto, int> m_gameService;
@@ -30,12 +33,15 @@ namespace Trader.WPF.ViewModels.PageViewModels.Custom
         ExchangerTabItemViewModel m_exchangerTabItemVm;
         MainTabItemViewModel m_mainTabItemVm;
         BalanceTabItemViewModel m_balanceTabItemVm;
+
+        IDialogService m_dialogService;
         #endregion
 
         #region Constructors
-        public TraderGameUcViewModel(int gameId)
+        public TraderGameUcViewModel(int gameId, IDialogService dialogService)
         {
             m_gameId = gameId;
+            m_dialogService = dialogService;
 
             InitServices();
             InitCommands();
@@ -43,7 +49,7 @@ namespace Trader.WPF.ViewModels.PageViewModels.Custom
         #endregion
 
         #region Events
-        public event EventHandler TransactionFinished;
+        public event EventHandler<TransactionEventArgs> TransactionFinished;
         public event EventHandler MoveFinished;
         #endregion
 
@@ -89,12 +95,14 @@ namespace Trader.WPF.ViewModels.PageViewModels.Custom
         #endregion
 
         #region Methods
-        public virtual void OnTransactionFinished(object sender, EventArgs e)
+        public virtual void RaiseTransactionFinished(object sender, TransactionEventArgs e)
         {
             var temp = TransactionFinished;
             temp?.Invoke(sender, e);
+
+            m_dialogService.MessageBoxOk("Transaction info", $"Transaction succeeded.\nWe have sent you {e.AmountSentToDestWallet} {e.DestWallet.ResourceName}!");
         }
-        protected virtual void OnMoveFinished(EventArgs e)
+        protected virtual void RaiseMoveFinished(EventArgs e)
         {
             var temp = MoveFinished;
             temp?.Invoke(this, e);
@@ -116,8 +124,8 @@ namespace Trader.WPF.ViewModels.PageViewModels.Custom
         }
         async Task InitInnerViewModelsAsync()
         {
-            MainTabItemVm = await MainTabItemViewModel.CreateAsync(this);
-            ExchangerTabItemVm = new ExchangerTabItemViewModel(this);
+            MainTabItemVm = await MainTabItemViewModel.CreateAsync(this, m_dialogService);
+            ExchangerTabItemVm = new ExchangerTabItemViewModel(this, m_dialogService);
             BalanceTabItemVm = await BalanceTabItemViewModel.CreateAsync(this);
         }
 
@@ -148,7 +156,7 @@ namespace Trader.WPF.ViewModels.PageViewModels.Custom
                 CurrentGame.CurrentMoveNumber++;
                 CurrentGame = await m_gameService.AddOrUpdateAsync(CurrentGame);
 
-                OnMoveFinished(EventArgs.Empty);
+                RaiseMoveFinished(EventArgs.Empty);
             }
             catch (Exception ex)
             {

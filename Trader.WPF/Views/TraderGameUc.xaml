@@ -38,12 +38,10 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock FontSize="18"
-                               Foreground="White"
+                    <TextBlock Style="{StaticResource TraderTextBlock}"
                                Grid.Column="0"
                                VerticalAlignment="Center">I want to spend</TextBlock>
-                    <TextBlock FontSize="18"
-                               Foreground="White"
+                    <TextBlock Style="{StaticResource TraderTextBlock}"
                                Grid.Column="1"
                                Margin="2.5,0,0,0"
                                VerticalAlignment="Center">I want to buy</TextBlock>
@@ -95,12 +93,10 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock FontSize="18"
-                               Foreground="White"
+                    <TextBlock Style="{StaticResource TraderTextBlock}"
                                Grid.Column="0"
                                VerticalAlignment="Center">I want to spend</TextBlock>
-                    <TextBlock FontSize="18"
-                               Foreground="White"
+                    <TextBlock Style="{StaticResource TraderTextBlock}"
                                Grid.Column="1"
                                Margin="2.5,0,0,0"
                                VerticalAlignment="Center">I want to sell</TextBlock>
