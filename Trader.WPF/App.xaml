@@ -6,8 +6,9 @@
 
     <Application.Resources>
         <Color x:Key="TraderBackgroundColor" A="255" R="128" G="64" B="44"/>
+        <Color x:Key="TraderDarkBackgroundColor" A="255" R="30"  G="47" B="73"/>
         <SolidColorBrush x:Key="TraderBackgroundBrush" Color="{StaticResource TraderBackgroundColor}" Opacity="0.55"/>
-        <SolidColorBrush x:Key="TraderDarkBrush" Color="#1e2f49" />
+        <SolidColorBrush x:Key="TraderDarkBrush" Color="{StaticResource TraderDarkBackgroundColor}" />
 
         <Style x:Key="UnderstockFont">
             <Setter Property="TextElement.FontFamily" Value="/Resources/#Understock" />
@@ -36,7 +37,7 @@
             </Setter>
         </Style>
         <Style x:Key="TraderTextBlock" TargetType="{x:Type TextBlock}">
-            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontSize" Value="17.5"/>
             <Setter Property="Foreground" Value="White"/>
         </Style>
 

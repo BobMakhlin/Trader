@@ -8,6 +8,7 @@ using Trader.BLL.Infrastructure;
 using Trader.BLL.Services.Common;
 using Trader.BLL.Services.Extensions;
 using Trader.DAL.DbModels;
+using Trader.WPF.Models;
 using Trader.WPF.ViewModels.PageViewModels.Custom;
 
 namespace Trader.WPF.ViewModels.TraderGamePageTabItems
@@ -15,7 +16,7 @@ namespace Trader.WPF.ViewModels.TraderGamePageTabItems
     class BalanceTabItemViewModel : BindableBase
     {
         #region Fields
-        List<IGrouping<string, double>> m_walletTransactions;
+        List<WalletModel> m_walletTransactions;
 
         TraderGameUcViewModel m_parentViewModel;
 
@@ -29,13 +30,10 @@ namespace Trader.WPF.ViewModels.TraderGamePageTabItems
         #endregion
 
         #region Properties
-        public List<IGrouping<string, double>> WalletTransactions
+        public List<WalletModel> Wallets
         {
             get => m_walletTransactions;
-            set
-            {
-                SetProperty(ref m_walletTransactions, value);
-            }
+            set => SetProperty(ref m_walletTransactions, value);
         }
         #endregion
 
@@ -55,7 +53,7 @@ namespace Trader.WPF.ViewModels.TraderGamePageTabItems
             (
                 t => t.GameId == m_parentViewModel.CurrentGame.GameId
             );
-            List<IGrouping<string, double>> transactions =
+            List<IGrouping<string, double>> wallets =
                 await Task.Run
                 (
                     (
@@ -72,8 +70,22 @@ namespace Trader.WPF.ViewModels.TraderGamePageTabItems
                     )
                     .ToList
                 );
+            List<WalletModel> result =
+                await Task.Run
+                (
+                    (
+                        from w in wallets
+                        select new WalletModel
+                        {
+                            ResourceName = w.Key,
+                            Transactions = w.Select(item => item).ToList(),
+                            Sum = w.Sum()
+                        }
+                    )
+                    .ToList
+                );
 
-            WalletTransactions = transactions;
+            Wallets = result;
         }
 
         async Task InitAsync()

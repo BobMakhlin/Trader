@@ -127,6 +127,7 @@
     <Compile Include="Helpers\GamePagesList.cs" />
     <Compile Include="Infrastructure\MyEventArgs\GameEventArgs.cs" />
     <Compile Include="Infrastructure\MyEventArgs\TransactionEventArgs.cs" />
+    <Compile Include="Models\WalletModel.cs" />
     <Compile Include="ViewModels\DialogWindows\MessageBoxYesNoViewModel.cs" />
     <Compile Include="ViewModels\DialogWindows\MessageBoxOkViewModel.cs" />
     <Compile Include="ViewModels\PageViewModels\Custom\CreateGameUcViewModel.cs" />

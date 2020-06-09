@@ -255,16 +255,27 @@
                         Command="{Binding ConvertResourceCommand}">Confirm</Button>
             </Grid>
         </TabItem>
-        
+
         <TabItem Header="Balance"
                  DataContext="{Binding BalanceTabItemVm}">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <ItemsControl ItemsSource="{Binding WalletTransactions}">
+                <ItemsControl ItemsSource="{Binding Wallets}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Expander Header="{Binding Key}">
+                            <Expander >
+                                <Expander.Header>
+                                    <TextBlock Foreground="{StaticResource TraderDarkBrush}">
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="{}{0}: {1}">
+                                                <Binding Path="ResourceName"/>
+                                                <Binding Path="Sum"/>
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </Expander.Header>
+
                                 <!-- Show the collection of transactions -->
-                                <ItemsControl ItemsSource="{Binding}">
+                                <ItemsControl ItemsSource="{Binding Transactions}">
                                     <ItemsControl.Background>
                                         <SolidColorBrush Color="White" Opacity="0.3"/>
                                     </ItemsControl.Background>
@@ -275,9 +286,10 @@
                                             <TextBlock Text="{Binding}">
                                             <b:Interaction.Triggers>
                                                 <b:DataTrigger Binding="{Binding}" Value="0" Comparison="Equal">
+                                                    <b:ChangePropertyAction PropertyName="Foreground" Value="{StaticResource TraderDarkBrush}"/>
                                                     <b:ChangePropertyAction PropertyName="Text" Value="No transactions"/>
                                                 </b:DataTrigger> 
-                                                <b:DataTrigger Binding="{Binding}" Value="0" Comparison="GreaterThanOrEqual">
+                                                <b:DataTrigger Binding="{Binding}" Value="0" Comparison="GreaterThan">
                                                     <b:ChangePropertyAction PropertyName="Foreground" Value="DarkGreen"/>
                                                 </b:DataTrigger>
                                                 <b:DataTrigger Binding="{Binding}" Value="0" Comparison="LessThan">
